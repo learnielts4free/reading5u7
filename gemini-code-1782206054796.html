@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Tiếng Anh Ẩm Thực Tương Tác - Ms Lê Hằng English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF7675;
+            --primary-dark: #D63031;
+            --secondary: #0984E3;
+            --secondary-dark: #0A3D62;
+            --accent: #E84393;
+            --correct: #2ECC71;
+            --wrong: #E74C3C;
+            --card-bg: rgba(255, 255, 255, 0.98);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(-45deg, #FF7675, #74B9FF, #A29BFE, #FFEAA7);
+            background-size: 400% 400%;
+            animation: gradientBG 14s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand h2 {
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+            font-weight: 900;
+        }
+        .brand p {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 700;
+        }
+
+        .exercise-nav {
+            display: flex;
+            gap: 6px;
+            background: #F1F5F9;
+            padding: 6px;
+            border-radius: 20px;
+        }
+
+        .nav-tab {
+            padding: 10px 18px;
+            border: none;
+            background: transparent;
+            font-weight: 900;
+            color: #475569;
+            cursor: pointer;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 0 var(--primary-dark);
+        }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 0.95rem;
+            transition: all 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-3d-secondary {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 0 #095493;
+        }
+        .btn-3d-secondary:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #095493;
+        }
+
+        .btn-3d-accent {
+            background: #FFEAA7;
+            color: #2D3748;
+            box-shadow: 0 4px 0 #D5A647;
+        }
+        .btn-3d-accent:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #D5A647;
+        }
+
+        #timer-display {
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: #1A202C;
+            color: #FFEAA7;
+            padding: 6px 16px;
+            border-radius: 14px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 80px);
+        }
+
+        .split-side {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            height: 100%;
+        }
+
+        .left-side {
+            border-right: 4px dashed rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .right-side {
+            background: rgba(248, 250, 252, 0.6);
+            backdrop-filter: blur(12px);
+        }
+
+        .exercise-panel {
+            display: none;
+        }
+        .exercise-panel.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+
+        .passage-title {
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin-bottom: 14px;
+            border-bottom: 3px solid #FFEAA7;
+            padding-bottom: 6px;
+            display: inline-block;
+        }
+
+        .passage-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #1A202C;
+            text-align: justify;
+            font-weight: 500;
+        }
+
+        .interactive-blank {
+            background: #FFEAA7;
+            border: 2px dashed #D97706;
+            color: #B45309;
+            padding: 2px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin: 2px 4px;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .interactive-blank.revealed {
+            background: #D1FAE5;
+            border: 2px solid var(--correct);
+            color: #065F46;
+            transform: scale(1.03);
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+        }
+
+        .question-header {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #1E293B;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+        .badge-ex {
+            background: #EDF2F7;
+            color: #4A5568;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #E2E8F0;
+            padding: 14px 18px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: left;
+            box-shadow: 0 4px 0 #E2E8F0;
+            transition: all 0.1s ease;
+            color: #2D3748;
+        }
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #FFF5F5;
+        }
+        .option-btn.correct {
+            background: #E8F5E9 !important;
+            border-color: var(--correct) !important;
+            box-shadow: 0 4px 0 var(--correct) !important;
+            color: #1B5E20 !important;
+            font-weight: 900;
+        }
+        .option-btn.wrong {
+            background: #FFEBEE !important;
+            border-color: var(--wrong) !important;
+            box-shadow: 0 4px 0 var(--wrong) !important;
+            color: #B71C1C !important;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 14px;
+            padding: 14px;
+            background: #FFFDE7;
+            border-radius: 14px;
+            border-left: 5px solid #FF7675;
+            font-size: 0.95rem;
+            color: #744210;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 32, 44, 0.65);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(6px);
+        }
+        .modal-content {
+            background: white;
+            padding: 36px;
+            border-radius: 28px;
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+            border: 4px solid var(--primary);
+            transform: scale(0.9);
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes modalPop {
+            to { transform: scale(1); }
+        }
+
+        #canvas-confetti {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-confetti"></canvas>
+
+    <header>
+        <div class="brand">
+            <h2>Ms Lê Hằng English 🍳</h2>
+            <p>Chuyên Đề Ẩm Thực & Văn Hóa Việt Nam</p>
+        </div>
+
+        <div class="exercise-nav">
+            <button class="nav-tab active" onclick="switchExercise('13')">Exercise 13</button>
+            <button class="nav-tab" onclick="switchExercise('14')">Exercise 14</button>
+            <button class="nav-tab" onclick="switchExercise('15')">Exercise 15</button>
+            <button class="nav-tab" onclick="switchExercise('16')">Exercise 16</button>
+        </div>
+
+        <div class="timer-container">
+            <button class="btn btn-3d-accent" id="btn-timer-toggle" onclick="toggleTimer()">BẮT ĐẦU TÍNH GIỜ</button>
+            <div id="timer-display">15:00</div>
+        </div>
+        <div>
+            <button class="btn btn-3d-secondary" onclick="submitExam()">NỘP BÀI HỆ THỐNG 🚀</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- BÊN TRÁI: ĐOẠN VĂN GỐC -->
+        <div class="split-side left-side">
+            
+            <!-- EXERCISE 13 -->
+            <div id="left-panel-13" class="exercise-panel active">
+                <div class="card">
+                    <h3 class="passage-title">❶ 🍎 Eat Well, Live Happy</h3>
+                    <p class="passage-text">
+                        Do you want to feel <span class="interactive-blank" data-ans="strong" onclick="revealInlineBlank(this)">[ (1) ? ]</span>? Good eating habits can help! Eat a good breakfast every day. Try to eat many <span class="interactive-blank" data-ans="fruits" onclick="revealInlineBlank(this)">[ (2) ? ]</span> and vegetables. You should drink <span class="interactive-blank" data-ans="a lot of" onclick="revealInlineBlank(this)">[ (3) ? ]</span> water, not too much soda. Also, remember to eat <span class="interactive-blank" data-ans="at" onclick="revealInlineBlank(this)">[ (4) ? ]</span> the same time every day. This simple routine is good for your body and your energy. Start today!
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 class="passage-title">❷ 🍳 The Big Cooking Challenge!</h3>
+                    <p class="passage-text">
+                        Do you love cooking? Join our fun competition! It happens <span class="interactive-blank" data-ans="on" onclick="revealInlineBlank(this)">[ (1) ? ]</span> Saturday afternoon. We need good <span class="interactive-blank" data-ans="chefs" onclick="revealInlineBlank(this)">[ (2) ? ]</span> to join the challenge. You can show your best dishes and win great <span class="interactive-blank" data-ans="prizes" onclick="revealInlineBlank(this)">[ (3) ? ]</span>! Bring your favorite ingredients and make a delicious meal for our judges. It is a great chance <span class="interactive-blank" data-ans="to meet" onclick="revealInlineBlank(this)">[ (4) ? ]</span> other food lovers! Sign up now!
+                    </p>
+                </div>
+            </div>
+
+            <!-- EXERCISE 14 -->
+            <div id="left-panel-14" class="exercise-panel">
+                <div class="card">
+                    <h3 class="passage-title">❶ Bún Chả & Phở Hà Nội</h3>
+                    <p class="passage-text">
+                        Pho might be Vietnam’s <span class="interactive-blank" data-ans="the most" onclick="revealInlineBlank(this)">[ (1) ? ]</span> famous dish, but bun cha is the top choice when it comes to lunchtime in Hanoi. It doesn’t matter if you eat bun cha in a restaurant or a small cart on the street, you will be <span class="interactive-blank" data-ans="served" onclick="revealInlineBlank(this)">[ (2) ? ]</span> by a plate of vermicelli (bun), a bowl of broth with grilled pork and a <span class="interactive-blank" data-ans="basket" onclick="revealInlineBlank(this)">[ (3) ? ]</span> of fresh herbs. Vermicelli and fresh herbs are pretty common in a Vietnamese restaurant. The broth and the pork are the ones that make this dish <span class="interactive-blank" data-ans="unique" onclick="revealInlineBlank(this)">[ (4) ? ]</span>. Bun cha sets often come with the delicious nem cua be– fried crab spring <span class="interactive-blank" data-ans="rolls" onclick="revealInlineBlank(this)">[ (5) ? ]</span>. Still not convinced? It’s what Obama ate during his night <span class="interactive-blank" data-ans="out" onclick="revealInlineBlank(this)">[ (6) ? ]</span> with Bourdain.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 class="passage-title">❷ Thói Quen Giải Trí & Kỹ Năng</h3>
+                    <p class="passage-text">
+                        Vietnamese people may <span class="interactive-blank" data-ans="go out" onclick="revealInlineBlank(this)">[ (1) ? ]</span> to drink at coffee shops or pubs on weekdays <span class="interactive-blank" data-ans="with" onclick="revealInlineBlank(this)">[ (2) ? ]</span> their friends after work. Some of <span class="interactive-blank" data-ans="them" onclick="revealInlineBlank(this)">[ (3) ? ]</span> invite their friends to drink at their homes on weekends. In the past, the Vietnamese usually <span class="interactive-blank" data-ans="drank" onclick="revealInlineBlank(this)">[ (4) ? ]</span> home-made alcohol such as “ruou gao” or “ruou de”. Then, they started to drink beer or imported wines.<br><br>
+                        Vietnamese people know about the damage of drinking alcohol, but they still drink. More Vietnamese people <span class="interactive-blank" data-ans="spend" onclick="revealInlineBlank(this)">[ (5) ? ]</span> their free time outside their homes such as cinemas, theatres or coffee shops. The number of places for entertainment has increased in big cities. However, more young people use their free time to study or attend clubs or centres for improving <span class="interactive-blank" data-ans="skills" onclick="revealInlineBlank(this)">[ (6) ? ]</span> such as communications, presentation and team working.
+                    </p>
+                </div>
+            </div>
+
+            <!-- EXERCISE 15 -->
+            <div id="left-panel-15" class="exercise-panel">
+                <div class="card">
+                    <h3 class="passage-title">❶ Vietnamese Cuisine Balance</h3>
+                    <p class="passage-text">
+                        Vietnamese cuisine is <strong>unique</strong>. <strong>It</strong> balances five tastes: spice, sour, bitter, salt and sweet. According to Vietnamese tradition, each of the tastes corresponds with an organ of the body. Cooks also try to include five types of nutrients – powder, water, minerals, protein and fat, as well as five colors – white, green, yellow, red and black – in each dish. Therefore, the dishes are balanced and colorful, attractive to both the eye and the tongue. There is also a balance between “heating” and “cooling”. Duck meat, for example, is considered cool, and is thus served in summer with ginger, which is considered warm. Chicken, on the other hand, is a warm food, so it’s usually eaten in the winter, and served with a sour sauce, which is considered cool.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 class="passage-title">❷ Regional Food Culture</h3>
+                    <p class="passage-text">
+                        Vietnamese food culture <strong>varies</strong> by regions from the north to the south. In Northern Vietnam, food is characterized by light and balanced food. Northern Vietnam is seen to be the cradle of Vietnamese cuisine with many notable dishes like Pho, Bun Rieu, Bun Thang, Bun Cha, Banh Cuon, etc. Then, food culture in Northern Vietnam became popular in Central and Southern Vietnam with suitable flavors in each region.<br><br>
+                        The regional cuisine of Central Vietnam is famous for its spicy food. Hue cuisine is typical of Central Vietnam’s food culture. Food in the region is often used with chili peppers and shrimp sauces, namely, Bun Bo Hue, Banh Khoai, Banh Beo, etc.<br><br>
+                        In Southern Vietnam, the warm weather and fertile soil create an ideal condition for planting a variety of fruit, vegetables and livestock. Thus, food in the region is often added with garlic, shallots and fresh herbs. Particularly, Southerners are in favor of sugar; they add sugar in almost all dishes. Some signature dishes from Southern Vietnam include Banh Khot and Bun Mam.
+                    </p>
+                </div>
+            </div>
+
+            <!-- EXERCISE 16 -->
+            <div id="left-panel-16" class="exercise-panel">
+                <div class="card">
+                    <h3 class="passage-title">❶ Daily Meals Habits</h3>
+                    <p class="passage-text">
+                        People in my area usually eat three meals a day, including breakfast, lunch and dinner. <span class="interactive-blank" data-ans="C" onclick="revealInlineBlank(this)">[ (1) ]</span> For breakfast, they enjoy eating dishes like Pho (noodle soup), sticky rice or bread and so on. <span class="interactive-blank" data-ans="B" onclick="revealInlineBlank(this)">[ (2) ]</span> Lunch often includes rice, meat, fish, vegetables, and soup. <span class="interactive-blank" data-ans="A" onclick="revealInlineBlank(this)">[ (3) ]</span> People have dinner between 7:00 to 8:00 p.m. Dinner has similar foods to lunch and some other types of food like chicken and seafood. <span class="interactive-blank" data-ans="D" onclick="revealInlineBlank(this)">[ (4) ]</span> Many people love to eat fresh fruits and drink tea after dinner.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 class="passage-title">❷ Banh Mi (Vietnamese Sandwich)</h3>
+                    <p class="passage-text">
+                        There are many delicious dishes in Vietnam, but one of my favorite dishes is Banh Mi which originate from Ho Chi Minh city. <span class="interactive-blank" data-ans="C" onclick="revealInlineBlank(this)">[ (1) ]</span> is the most popular street food in Vietnam because of its convenience, deliciousness and the full of nutrients. <span class="interactive-blank" data-ans="B" onclick="revealInlineBlank(this)">[ (2) ]</span> such as pork, fried eggs, pate, cucumber, green onion, butter and chili sauce. All of these create a unique flavor of this dish. <span class="interactive-blank" data-ans="D" onclick="revealInlineBlank(this)">[ (3) ]</span> Today, Vietnamese sandwich is not only common in Ho Chi Minh city, but it is also very popular in other cities in Vietnam. <span class="interactive-blank" data-ans="A" onclick="revealInlineBlank(this)">[ (4) ]</span> I am a huge fan of this dish and I can eat it everyday.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BÊN PHẢI: HỆ THỐNG CÂU HỎI TRẮC NGHIỆM -->
+        <div class="split-side right-side" id="right-questions-viewport"></div>
+    </div>
+
+    <!-- MODAL HIỂN THỊ KẾT QUẢ -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--primary-dark); font-weight:900; margin-bottom: 12px;">🎉 KẾT QUẢ BÀI LÀM HỆ THỐNG 🎉</h2>
+            <h1 id="modal-score" style="font-size: 3.5rem; color: var(--secondary); margin-bottom: 12px;">0/0</h1>
+            <p id="modal-eval" style="font-weight:700; font-size:1.05rem; color:#475569; margin-bottom:24px; line-height:1.5;"></p>
+            <button class="btn btn-3d-secondary" onclick="closeResultModal()">Xem lại lỗi sai của em</button>
+        </div>
+    </div>
+
+    <script>
+        const dbQuestions = {
+            "13": [
+                { id:"13_1", ex:"Ex 13 ❶", q:"Question 1:", opts:["strong","small","fast","cold"], correct:"strong", exp:"Feel strong: Cảm thấy khỏe mạnh. Việc tạo thói quen ăn uống lành mạnh giúp cơ thể khỏe khoắn." },
+                { id:"13_2", ex:"Ex 13 ❶", q:"Question 2:", opts:["fruit","fruity","fruits","fruitfully"], correct:"fruits", exp:"Sau 'many' cần danh từ đếm được số nhiều để song hành cùng với 'vegetables', do đó chọn 'fruits'." },
+                { id:"13_3", ex:"Ex 13 ❶", q:"Question 3:", opts:["few","a lot of","many","a little"], correct:"a lot of", exp:"'Water' là danh từ không đếm được, dùng 'a lot of' để khuyên nên uống nhiều nước." },
+                { id:"13_4", ex:"Ex 13 ❶", q:"Question 4:", opts:["on","in","from","at"], correct:"at", exp:"Cụm từ cố định chỉ thời gian chính xác: 'at the same time' (vào cùng một khung giờ mỗi ngày)." },
+                { id:"13_5", ex:"Ex 13 ❷", q:"Question 1:", opts:["on","in","at","for"], correct:"on", exp:"Giới từ 'on' đứng trước các buổi của một ngày cụ thể: 'on Saturday afternoon'." },
+                { id:"13_6", ex:"Ex 13 ❷", q:"Question 2:", opts:["tables","chefs","judges","plates"], correct:"chefs", exp:"Cuộc thi nấu ăn cần tuyển chọn những đầu bếp giỏi ('chefs') tham gia tranh tài." },
+                { id:"13_7", ex:"Ex 13 ❷", q:"Question 3:", opts:["prize","prizing","prizes","prizely"], correct:"prizes", exp:"Sau động từ 'win' và tính từ 'great' cần một danh từ chỉ phần thưởng, ở dạng số nhiều 'prizes' phù hợp cấu trúc câu." },
+                { id:"13_8", ex:"Ex 13 ❷", q:"Question 4:", opts:["to meeting","meet","to meet","meeting"], correct:"to meet", exp:"Cấu trúc tính từ/danh từ chỉ cơ hội: 'a great chance + to-V' (cơ hội tuyệt vời để gặp gỡ)." }
+            ],
+            "14": [
+                { id:"14_1", ex:"Ex 14 ❶", q:"Question 1:", opts:["most","the most","best","the best"], correct:"the most", exp:"Cấu trúc so sánh nhất của tính từ dài 'famous': 'the most famous dish'." },
+                { id:"14_2", ex:"Ex 14 ❶", q:"Question 2:", opts:["cooked","made","served","tried"], correct:"served", exp:"Dạng bị động 'be served by': bạn sẽ được phục vụ/bưng ra một đĩa bún kèm đồ ăn." },
+                { id:"14_3", ex:"Ex 14 ❶", q:"Question 3:", opts:["bottle","pot","bar","basket"], correct:"basket", exp:"Từ chỉ vật chứa đựng rau sống phù hợp văn hóa Việt Nam: 'a basket of fresh herbs' (một rổ rau thơm)." },
+                { id:"14_4", ex:"Ex 14 ❶", q:"Question 4:", opts:["simple","comfort","specially","unique"], correct:"unique", exp:"Make + tân ngữ + tính từ: Nước dùng và thịt nướng là thứ làm cho món ăn này trở nên độc đáo ('unique')." },
+                { id:"14_5", ex:"Ex 14 ❶", q:"Question 5:", opts:["pieces","rolls","halves","slices"], correct:"rolls", exp:"Cụm từ cố định cho món chả giò/nem cua bể: 'spring rolls'." },
+                { id:"14_6", ex:"Ex 14 ❶", q:"Question 6:", opts:["out","in","towards","along"], correct:"out", exp:"Cụm từ 'night out' chỉ một buổi tối đi chơi, ăn uống tụ tập bên ngoài." },
+                { id:"14_7", ex:"Ex 14 ❷", q:"Question 1:", opts:["go","go out","go on","go away"], correct:"go out", exp:"'Go out to drink': đi ra ngoài tụ tập, hẹn hò cà phê hoặc đến quán bia cùng bạn bè." },
+                { id:"14_8", ex:"Ex 14 ❷", q:"Question 2:", opts:["for","of","with","to"], correct:"with", exp:"Giới từ đồng hành: tụ tập 'with their friends' (với bạn bè của họ)." },
+                { id:"14_9", ex:"Ex 14 ❷", q:"Question 3:", opts:["him","them","her","they"], correct:"them", exp:"Sau giới từ 'of' cần đại từ tân ngữ số nhiều thay thế cho cụm danh từ chủ ngữ phía trước: 'Some of them' (một vài người trong số họ)." },
+                { id:"14_10", ex:"Ex 14 ❷", q:"Question 4:", opts:["drink","drinking","to drink","drank"], correct:"drank", exp:"Trạng ngữ chỉ thời gian quá khứ 'In the past' đòi hỏi động từ phải chia thì Quá khứ đơn: 'drank'." },
+                { id:"14_11", ex:"Ex 14 ❷", q:"Question 5:", opts:["spend","take","come","waste"], correct:"spend", exp:"Cấu trúc phân bổ thời gian: 'spend + time + V-ing/Preposition' (dành thời gian giải trí ở ngoài nhà)." },
+                { id:"14_12", ex:"Ex 14 ❷", q:"Question 6:", opts:["knowledge","skills","experience","memory"], correct:"skills", exp:"Các ví dụ liệt kê bên dưới như giao tiếp, thuyết trình, làm việc nhóm đều được định nghĩa là các kỹ năng mềm ('skills')." }
+            ],
+            "15": [
+                { id:"15_1", ex:"Ex 15 ❶", q:"Question 1: The word 'unique' is closest in meaning to:", opts:["common","strange","special","simple"], correct:"special", exp:"'Unique' nghĩa là độc nhất, độc đáo, tương đương nghĩa với từ 'special' (đặc biệt)." },
+                { id:"15_2", ex:"Ex 15 ❶", q:"Question 2: Which is NOT one of the five tastes mentioned?", opts:["sweet","salt","spice","salty"], correct:"salty", exp:"Trong bài đọc, tác giả liệt kê danh từ gốc gồm: spice, sour, bitter, salt and sweet. Từ 'salty' không xuất hiện." },
+                { id:"15_3", ex:"Ex 15 ❶", q:"Question 3: The word 'It' in line 1 refers to:", opts:["A dish","Vietnamese cuisine","The body","An organ"], correct:"Vietnamese cuisine", exp:"Đại từ 'It' đứng đầu câu hai thay thế trực tiếp cho chủ ngữ câu trước đó: 'Vietnamese cuisine'." },
+                { id:"15_4", ex:"Ex 15 ❶", q:"Question 4: Reason for serving chicken with a sour sauce?", opts:["To make the chicken more colorful.","To make the dish sweeter.","To create a balance with a 'cool' ingredient.","To replace the missing salt."], correct:"To create a balance with a 'cool' ingredient.", exp:"Dẫn chứng dòng cuối: Chicken là món nóng (warm), do đó ăn kèm sốt chua tính mát (cool) để tạo ra sự cân bằng âm dương hoàn hảo." },
+                { id:"15_5", ex:"Ex 15 ❶", q:"Question 5: Purpose of including five colors in each dish?", opts:["To make the dishes boring.","To make the dishes balanced and attractive.","To replace the five types of nutrients.","To make the dishes taste better than they look."], correct:"To make the dishes balanced and attractive.", exp:"Dẫn chứng giữa bài: 'Therefore, the dishes are balanced and colorful, attractive to both the eye and the tongue'." },
+                { id:"15_6", ex:"Ex 15 ❷", q:"Question 1: What does the word 'varies' mostly mean?", opts:["stays the same","changes","stops","grows"], correct:"changes", exp:"'Vary' có nghĩa là đa dạng, biến đổi khác nhau giữa các vùng miền, đồng nghĩa với 'changes'." },
+                { id:"15_7", ex:"Ex 15 ❷", q:"Question 2: Which of the following is NOT true?", opts:["The South has warm weather and fertile soil.","Central Vietnam is famous for sweet food.","Pho is a notable dish from Northern Vietnam.","Northern food culture became popular in other regions."], correct:"Central Vietnam is famous for sweet food.", exp:"Bài đọc nêu rõ: Miền Trung nổi tiếng với đồ ăn cay (spicy), còn miền Nam mới chuộng ngọt (sugar). Do đó câu B là sai." },
+                { id:"15_8", ex:"Ex 15 ❷", q:"Question 3: Typical flavor characteristic of Hue cuisine?", opts:["Light and balanced","Sweet","Salty","Spicy"], correct:"Spicy", exp:"Dẫn chứng đoạn 2: 'The regional cuisine of Central Vietnam is famous for its spicy food. Hue cuisine is typical...'" },
+                { id:"15_9", ex:"Ex 15 ❷", q:"Question 4: What do Southern people add to almost all dishes?", opts:["Chili peppers","Shrimp sauces","Sugar","Garlic and shallots"], correct:"Sugar", exp:"Dẫn chứng câu gần cuối: 'Particularly, Southerners are in favor of sugar; they add sugar in almost all dishes.'" },
+                { id:"15_10", ex:"Ex 15 ❷", q:"Question 5: What is Northern Vietnam considered to be?", opts:["The most modern area.","The cradle.","The place for spicy food.","The area with the most livestock."], correct:"The cradle.", exp:"Dẫn chứng đoạn 1: 'Northern Vietnam is seen to be the cradle of Vietnamese cuisine'." }
+            ],
+            "16": [
+                { id:"16_1", ex:"Ex 16 ❶", q:"Blank (1) tương ứng với:", opts:["A. Dinner is the main meal.","B. Lunch from 12:00 to 1 p.m.","C. They usually have breakfast before 8 o’clock.","D. People gather around the table."], correct:"C. They usually have breakfast before 8 o’clock.", exp:"Câu tiếp theo nói về thực đơn của 'breakfast', vì vậy câu C thiết lập mốc thời gian ăn sáng là chuẩn logic." },
+                { id:"16_2", ex:"Ex 16 ❶", q:"Blank (2) tương ứng với:", opts:["A. Dinner is the main meal.","B. Lunch from 12:00 to 1 p.m.","C. They usually have breakfast before 8 o’clock.","D. People gather around the table."], correct:"B. Lunch from 12:00 to 1 p.m.", exp:"Câu kế tiếp mô tả các món ăn có trong 'Lunch', do đó câu B là câu giới thiệu thời gian ăn trưa phù hợp." },
+                { id:"16_3", ex:"Ex 16 ❶", q:"Blank (3) tương ứng với:", opts:["A. Dinner is the main meal.","B. Lunch from 12:00 to 1 p.m.","C. They usually have breakfast before 8 o’clock.","D. People gather around the table."], correct:"A. Dinner is the main meal.", exp:"Đoạn văn bắt đầu chuyển sang chủ đề bữa tối. Câu A khẳng định vai trò chủ đạo của Dinner." },
+                { id:"16_4", ex:"Ex 16 ❶", q:"Blank (4) tương ứng với:", opts:["A. Dinner is the main meal.","B. Lunch from 12:00 to 1 p.m.","C. They usually have breakfast before 8 o’clock.","D. People gather around the table."], correct:"D. People gather around the table.", exp:"Vị trí này đúc kết nét văn hóa quần tụ gia đình hoặc bạn bè bên mâm cơm tối ấm cúng." },
+                { id:"16_5", ex:"Ex 16 ❷", q:"Blank (1) tương ứng với:", opts:["A. Buy easily on streets.","B. Components are very diverse","C. Banh Mi called 'Vietnamese sandwich'","D. Served as an ideal breakfast."], correct:"C. Banh Mi called 'Vietnamese sandwich'", exp:"Câu C giới thiệu tên gọi tiếng Anh phổ quát của Bánh Mì ngay khi vừa nhắc tên món ở câu trước." },
+                { id:"16_6", ex:"Ex 16 ❷", q:"Blank (2) tương ứng với:", opts:["A. Buy easily on streets.","B. Components are very diverse","C. Banh Mi called 'Vietnamese sandwich'","D. Served as an ideal breakfast."], correct:"B. Components are very diverse", exp:"Theo sau câu này là một loạt thành phần liệt kê (thịt, trứng, pa-tê...), thích hợp đi sau câu khái quát các thành phần đa dạng." },
+                { id:"16_7", ex:"Ex 16 ❷", q:"Blank (3) tương ứng với:", opts:["A. Buy easily on streets.","B. Components are very diverse","C. Banh Mi called 'Vietnamese sandwich'","D. Served as an ideal breakfast."], correct:"D. Served as an ideal breakfast.", exp:"Câu D nêu bật giá trị tiện lợi, biến món này trở thành bữa sáng hoặc đồ ăn nhẹ lý tưởng." },
+                { id:"16_8", ex:"Ex 16 ❷", q:"Blank (4) tương ứng với:", opts:["A. Buy easily on streets.","B. Components are very diverse","C. Banh Mi called 'Vietnamese sandwich'","D. Served as an ideal breakfast."], correct:"A. Buy easily on streets.", exp:"Kết nối với tính phổ biến ở câu trước, việc người dân có thể dễ dàng tìm mua bánh mì trên mọi con phố là mảnh ghép hoàn hảo cuối bài." }
+            ]
+        };
+
+        let currentActiveChặng = "13";
+        let userPickedAnswers = {};
+
+        function shuffleOptions(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function switchExercise(chặngNum) {
+            currentActiveChặng = chặngNum;
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent.includes(chặngNum)) tab.classList.add('active');
+            });
+
+            document.querySelectorAll('.left-side .exercise-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(`left-panel-${chặngNum}`).classList.add('active');
+
+            renderQuestionsForChặng(chặngNum);
+        }
+
+        function renderQuestionsForChặng(chặngNum) {
+            const viewport = document.getElementById('right-questions-viewport');
+            viewport.innerHTML = "";
+
+            const listQ = dbQuestions[chặngNum];
+            if(!listQ) return;
+
+            listQ.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const randomized = shuffleOptions([...item.opts]);
+                let optsHTML = "";
+                randomized.forEach(o => {
+                    let extraClass = "";
+                    let isDisable = "";
+                    if (userPickedAnswers[item.id]) {
+                        isDisable = "style='pointer-events: none;'";
+                        if (o === item.correct) extraClass = "correct";
+                        else if (o === userPickedAnswers[item.id].selected) extraClass = "wrong";
+                    }
+                    optsHTML += `<button class="option-btn ${extraClass}" ${isDisable} onclick="evaluateUserClick(this, '${o}', '${item.correct}', '${item.id}')">${o}</button>`;
+                });
+
+                let expVisible = userPickedAnswers[item.id] ? "style='display:block;'" : "";
+
+                card.innerHTML = `
+                    <div class="question-block" id="block-${item.id}">
+                        <div class="question-header">
+                            <span class="badge-ex">${item.ex}</span>
+                            <span>${item.q}</span>
+                        </div>
+                        <div class="options-grid">${optsHTML}</div>
+                        <div class="explanation" id="exp-box-${item.id}" ${expVisible}>
+                            <strong>👩‍🏫 LỜI GIẢI CHI TIẾT:</strong> ${item.exp}
+                        </div>
+                    </div>
+                `;
+                viewport.appendChild(card);
+            });
+        }
+
+        function revealInlineBlank(el) {
+            if (el.classList.contains('revealed')) return;
+            el.textContent = " " + el.getAttribute('data-ans') + " ";
+            el.classList.add('revealed');
+            triggerSynthesizedSound('correct');
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function triggerSynthesizedSound(status) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (status === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+            }
+        }
+
+        function executeConfettiBurst() {
+            const canvas = document.getElementById('canvas-confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let elements = [];
+            for (let i = 0; i < 45; i++) {
+                elements.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 6 + 6,
+                    color: `hsl(${Math.random() * 360}, 90%, 65%)`
+                });
+            }
+            function anim() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                elements.forEach(p => {
+                    p.y += 6;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                    if (p.y < canvas.height) alive = true;
+                });
+                if (alive) requestAnimationFrame(anim);
+            }
+            anim();
+        }
+
+        function evaluateUserClick(btn, selectedOption, correctOption, qId) {
+            const block = document.getElementById(`block-${qId}`);
+            const siblingBtns = block.querySelectorAll('.option-btn');
+            const expBox = document.getElementById(`exp-box-${qId}`);
+
+            siblingBtns.forEach(b => b.style.pointerEvents = 'none');
+            let isRight = (selectedOption === correctOption);
+            userPickedAnswers[qId] = { selected: selectedOption, isCorrect: isRight };
+
+            if (isRight) {
+                btn.classList.add('correct');
+                triggerSynthesizedSound('correct');
+                executeConfettiBurst();
+
+                document.querySelectorAll(`#left-panel-${currentActiveChặng} .interactive-blank`).forEach(blank => {
+                    let textClean = selectedOption.replace(/^[A-D]\.\s*/, "").trim().toLowerCase();
+                    let ansClean = blank.getAttribute('data-ans').trim().toLowerCase();
+                    if(ansClean === textClean || textClean.includes(ansClean) || ansClean.includes(textClean)) {
+                        blank.textContent = " " + blank.getAttribute('data-ans') + " ";
+                        blank.classList.add('revealed');
+                    }
+                });
+            } else {
+                btn.classList.add('wrong');
+                triggerSynthesizedSound('wrong');
+                siblingBtns.forEach(b => {
+                    if (b.textContent.trim() === correctOption) b.classList.add('correct');
+                });
+            }
+            expBox.style.display = 'block';
+        }
+
+        let secondsLeft = 900;
+        let countdownTimer = null;
+        let isTimerActive = false;
+
+        function toggleTimer() {
+            const btn = document.getElementById('btn-timer-toggle');
+            if (!isTimerActive) {
+                isTimerActive = true;
+                btn.textContent = "TẠM DỪNG THỜI GIAN";
+                countdownTimer = setInterval(() => {
+                    secondsLeft--;
+                    let min = Math.floor(secondsLeft / 60);
+                    let sec = secondsLeft % 60;
+                    document.getElementById('timer-display').textContent = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
+                    if (secondsLeft <= 0) {
+                        clearInterval(countdownTimer);
+                        submitExam();
+                    }
+                }, 1000);
+            } else {
+                isTimerActive = false;
+                btn.textContent = "TIẾP TỤC LÀM BÀI";
+                clearInterval(countdownTimer);
+            }
+        }
+
+        function submitExam() {
+            clearInterval(countdownTimer);
+            let totalRequired = 0;
+            let finalScore = 0;
+
+            for (let path in dbQuestions) {
+                totalRequired += dbQuestions[path].length;
+            }
+            for (let qId in userPickedAnswers) {
+                if (userPickedAnswers[qId].isCorrect === true) finalScore++;
+            }
+
+            document.getElementById('modal-score').textContent = `${finalScore}/${totalRequired}`;
+            let rating = finalScore / totalRequired >= 0.85 ? "Tuyệt vời! Em đã nắm rất vững kiến thức ngữ pháp và từ vựng về chủ đề Food & Culture." : "Em hãy rà soát kỹ lại các câu trả lời chưa đúng dựa vào bảng Lời giải chi tiết nhé.";
+            document.getElementById('modal-eval').textContent = rating;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function closeResultModal() {
+            document.getElementById('result-modal').style.display = 'none';
+        }
+
+        window.onload = function() {
+            renderQuestionsForChặng("13");
+        };
+    </script>
+</body>
+</html>
